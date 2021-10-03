@@ -11,34 +11,27 @@ with open(csv_path) as csv_file:
     csv_header = next(csv_reader)
     # print(f"The header is: {csv_header}")
 
-    # creating tuples to store the columns and work easier with the data
-    tuple_date = tuple()
-    tuple_value = tuple()
+    csv_list = list(csv_reader)
 
-    # storing the rows in the csv file into two different tuples
-    for row in csv_reader:
-        tuple_date += (row[0],)
-        tuple_value += (int(row[1]),)
-    
-months_total = len(tuple_date)
-net_total = sum(tuple_value)
+list_date = [i[0] for i in csv_list]
+list_value = [int(i[1]) for i in csv_list]
+
+months_total = len(list_date)
+net_total = sum(list_value)
 
 # calculating the Average Change using a for loop
 average_change = 0
 for i in range(months_total-1):
-    average_change += tuple_value[i]-tuple_value[i+1]
+    average_change += list_value[i]-list_value[i+1]
     average_change = average_change/months_total
 
-# zipping the tuples to find the Greatest Increase and Decrease Values and Dates
-csv_data = zip(tuple_date, tuple_value)
-
 # looping throughthe zipped tuples to find the Greatest Increase and Decrease Values and Dates
-for row in csv_data:
-    if int(row[1]) == max(tuple_value):
+for row in csv_list:
+    if int(row[1]) == max(list_value):
         # print(row)
         greatest_inc_value = int(row[1])
         greatest_inc_date = row[0]
-    elif int(row[1]) == min(tuple_value):
+    elif int(row[1]) == min(list_value):
         # print(row)
         greatest_dec_value = int(row[1])
         greatest_dec_date = row[0]
@@ -49,8 +42,8 @@ Financial Analysis
 Total Months: {months_total}
 Total: ${net_total}
 Average Change: ${average_change:.{7}}
-Greatest Increase in Profits: {greatest_inc_date} {greatest_inc_value}
-Greatest Decrease in Profits: {greatest_dec_date} {greatest_dec_value}
+Greatest Increase in Profits: {greatest_inc_date} (${greatest_inc_value})
+Greatest Decrease in Profits: {greatest_dec_date} (${greatest_dec_value})
 """)
 print(output_message)   # printing the output message in the screen
 
